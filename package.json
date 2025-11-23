@@ -1,0 +1,29 @@
+{
+  "name": "group-project",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/alexraju01/e-learning-garden#readme",
+  "bugs": {
+    "url": "https://github.com/alexraju01/e-learning-garden/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alexraju01/e-learning-garden.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "lint": "eslint .",
+    "start": "nodemon backend/server.js"
+  },
+  "devDependencies": {
+    "eslint": "^9.39.1",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.4",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "prettier": "^3.6.2"
+  }
+}
