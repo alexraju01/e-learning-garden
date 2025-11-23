@@ -17,3 +17,8 @@ app.listen(port, () => {
     `${CYAN}Server listening on http://localhost:${YELLOW}${port}${RESET}`,
   );
 });
+
+function unusedFunction() {
+  // This function is intentionally left unused to demonstrate ESLint's no-unused-vars rule.
+  return 'This function is not used anywhere.';
+}
