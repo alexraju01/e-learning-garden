@@ -1,0 +1,43 @@
+# .github/workflows/lint.yml
+
+name: ESLint Check
+
+# 1. Trigger the workflow on push and pull request events
+on:
+  push:
+    # Run only for pushes to the 'main' branch or branches starting with 'release/'
+    branches:
+      - main
+      - 'release/**'
+  pull_request:
+    # Run for all pull requests
+    types: [opened, synchronize, reopened]
+    branches:
+      - main # Check against the main branch
+
+# 2. Define the jobs to run
+jobs:
+  lint:
+    # 3. Specify the runner environment
+    runs-on: ubuntu-latest
+
+    # 4. Define the steps to execute
+    steps:
+      # Step 4a: Checkout the code
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      # Step 4b: Set up Node.js environment
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      # Step 4c: Install dependencies
+      - name: Install Dependencies
+        run: npm ci
+
+      # Step 4d: Run ESLint
+      - name: Run ESLint
+        run: npm run lint
