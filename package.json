@@ -15,7 +15,7 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "lint": "eslint .",
+    "lint": "eslint . && echo '\n\u001b[1m\u001b[32m No linting issues found! Code quality is excellent.\u001b[0m'",
     "start": "nodemon backend/server.js",
     "dev": "concurrently \"cd backend && npm run dev\" \"cd frontend && npm run dev\""
   },

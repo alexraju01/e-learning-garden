@@ -6,11 +6,17 @@ app.get('/', (req, res) => {
   res.send('Hello from server!!');
 });
 
+// ANSI Escape Codes:
+const RESET = '\x1b[0m';
+const CYAN = '\x1b[36m';
+const YELLOW = '\x1b[33m';
+
 app.listen(port, () => {
   // eslint-disable-next-line no-console
-  console.log(`Server listening on http://localhost:${port}`);
+  console.log(
+    `${CYAN}Server listening on http://localhost:${YELLOW}${port}${RESET}`,
+  );
 });
-
 const add = (a, b) => {
   return a + b;
 };
