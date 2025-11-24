@@ -1,8 +1,9 @@
-const express = require('express');
+import express from 'express';
+
 const app = express();
 const port = 3000;
 
-app.get('/', (req, res) => {
+app.get('/', (_, res) => {
   res.send('Hello from server!!');
 });
 
@@ -12,8 +13,7 @@ const CYAN = '\x1b[36m';
 const YELLOW = '\x1b[33m';
 
 app.listen(port, () => {
-  // eslint-disable-next-line no-console
   console.log(
-    `${CYAN}Server listening on http://localhost:${YELLOW}${port}${RESET}`,
+    `${CYAN}Server listenings on http://localhost:${YELLOW}${port}${RESET}`,
   );
 });
