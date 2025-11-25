@@ -1,18 +1,24 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import Task from '../models/task.model';
+import AppError from '../lib/AppError';
 
 export const getAllTasks = async (_: Request, res: Response) => {
   const tasks = await Task.findAll();
   res
     .status(200)
-    .json({ status: 'success', results: tasks.length, data: tasks });
+    .json({ status: 'success', results: tasks.length, data: { tasks: tasks } });
 };
 
-export const getOneTask = async (req: Request, res: Response) => {
+export const getOneTask = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   const { id } = req.params;
-  console.log(id);
   const task = await Task.findByPk(id);
-  console.log(task);
+
+  if (!task) return next(new AppError('No Task with this id!', 404));
+
   res.status(200).json({ status: 'success', data: task });
 };
 
@@ -42,13 +48,19 @@ export const createTask = async (req: Request, res: Response) => {
   });
 };
 
-export const deleteTask = async (req: Request, res: Response) => {
+export const deleteTask = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   const { id } = req.params;
   const deleteTask = await Task.destroy({
     where: {
       id,
     },
   });
+
+  if (!deleteTask) return next(new AppError('This task does not exist.', 403));
 
   res.status(204).json({
     status: 'success',
