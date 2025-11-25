@@ -1,13 +1,18 @@
-import { Sequelize } from '@sequelize/core';
-import { PostgresDialect } from '@sequelize/postgres';
+// import { Sequelize } from '@sequelize/core';
+// import { PostgresDialect } from '@sequelize/postgres';
+
+import { Sequelize } from 'sequelize';
 
 export const sequelize = new Sequelize({
-  dialect: PostgresDialect,
+  dialect: 'postgres',
   database: process.env.DB_NAME,
-  user: process.env.DB_USER,
+  // V6 uses 'username' instead of 'user'
+  username: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
   host: process.env.DB_HOST,
   port: Number(process.env.DB_PORT),
   ssl: false,
-  clientMinMessages: 'notice',
+  dialectOptions: {
+    clientMinMessages: 'notice',
+  },
 });
