@@ -17,7 +17,8 @@
   "scripts": {
     "lint": "eslint . && echo '\n\u001b[1m\u001b[32m No linting issues found! Code quality is excellent.\u001b[0m'",
     "start": "nodemon backend/server.js",
-    "dev": "concurrently \"cd backend && npm run dev\" \"cd frontend && npm run dev\""
+    "dev": "concurrently \"cd backend && npm run dev\" \"cd frontend && npm run dev\"",
+    "postinstall": "npm i --prefix backend && npm i --prefix frontend"
   },
   "devDependencies": {
     "eslint": "^9.39.1",

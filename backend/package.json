@@ -11,8 +11,10 @@
     "dev": "nodemon  server.ts"
   },
   "dependencies": {
+    "@sequelize/postgres": "^7.0.0-alpha.47",
     "dotenv": "^17.2.3",
-    "express": "^5.1.0"
+    "express": "^5.1.0",
+    "sequelize": "^6.37.7"
   },
   "devDependencies": {
     "@types/express": "^5.0.5",
