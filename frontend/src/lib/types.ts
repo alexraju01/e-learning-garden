@@ -54,6 +54,7 @@ interface Task {
   timeLog:TimeLog;
 
   completed:boolean;  //Or should we use 
+  prioity: Priority;
 
   //Details
   title:string;
@@ -61,6 +62,8 @@ interface Task {
   tags?:string[];
   comments: Comment[];
 }
+
+enum Priority {LOW = 0, MEDIUM = 1, HIGH = 2}
 
 /**
  * @summary Generic comment
