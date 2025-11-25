@@ -6,7 +6,7 @@ import User from '../models/user.model';
 export interface AuthRequest extends Request {
   user?: {
     id: number;
-    role: 'PM' | 'LM' | 'Staff';
+    role: 'project manager' | 'line manager' | 'user';
   };
 }
 
@@ -31,7 +31,7 @@ export const authenticate = async (
     // Verify token
     const decoded = jwt.verify(token, process.env.JWT_SECRET || 'fallback-secret') as {
       id: number;
-      role: 'PM' | 'LM' | 'Staff';
+      role: 'project manager' | 'line manager' | 'user';
     };
 
     // Check if user still exists
