@@ -43,14 +43,34 @@ Task.init(
       autoIncrement: true,
       primaryKey: true,
     },
+
     title: {
       type: DataTypes.STRING(100),
       allowNull: false,
+      unique: true,
+      validate: {
+        notEmpty: {
+          msg: 'Title is required and cannot be empty.',
+        },
+
+        len: {
+          args: [5, 100],
+          msg: 'Title must be between 5 and 100n characters long.',
+        },
+      },
     },
+
     description: {
       type: DataTypes.TEXT,
       allowNull: true,
+      validate: {
+        max: {
+          args: [2000],
+          msg: 'Description cannot be longer than 2000 characters.',
+        },
+      },
     },
+
     status: {
       type: DataTypes.ENUM(
         'not started',
@@ -60,20 +80,50 @@ Task.init(
       ),
       allowNull: false,
       defaultValue: 'not started',
+      validate: {
+        isIn: {
+          args: [['not started', 'in progress', 'completed', 'in review']],
+          msg: 'Invalid status value.',
+        },
+      },
     },
 
     priority: {
       type: DataTypes.ENUM('low', 'medium', 'high'),
       allowNull: true,
+      validate: {
+        // Custom validator to allow null/undefined OR be one of the enum values
+        isPriorityValid(value: Priority | null | undefined) {
+          if (
+            value !== null &&
+            value !== undefined &&
+            !['low', 'medium', 'high'].includes(value)
+          ) {
+            throw new Error(
+              'Invalid priority value. Must be low, medium, or high.',
+            );
+          }
+        },
+      },
     },
+
     tags: {
       type: DataTypes.ARRAY(DataTypes.STRING),
       allowNull: true,
       defaultValue: [],
     },
+
     dueBy: {
       type: DataTypes.DATE,
       allowNull: true,
+      validate: {
+        // Ensure dueBy is not a date in the past
+        isFuture(value: Date | null) {
+          if (value && value < new Date()) {
+            throw new Error('Due date cannot be in the past');
+          }
+        },
+      },
     },
   },
   {
