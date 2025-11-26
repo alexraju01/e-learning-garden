@@ -35,7 +35,21 @@ User.init(
       type: DataTypes.STRING(100),
       allowNull: false,
       unique: true,
+      validate: {
+        notEmpty: {
+          msg: 'Username is required',
+        },
+        len: {
+          args: [3, 50],
+          msg: 'Username must be between 3 and 50 character',
+        },
+        is: {
+          args: /^[a-zA-Z0-9._]+$/i,
+          msg: 'Username can only contain letters, numbers, dots, and underscores',
+        },
+      },
     },
+
     email: {
       type: DataTypes.STRING(255),
       allowNull: false,
@@ -44,6 +58,7 @@ User.init(
         isEmail: true,
       },
     },
+
     password: {
       type: DataTypes.STRING(255),
       allowNull: false,
