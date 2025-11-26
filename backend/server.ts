@@ -1,23 +1,21 @@
 import app from './app';
 import { sequelize } from './config/db';
-
-// console.log colour change
-const GREEN = '\x1b[32m';
-const ORANGE = '\x1b[33m';
-const RED = '\x1b[31m';
+import { BLUE, ORANGE, RED, RESET } from './lib/colours';
 
 async function startServer() {
   try {
-    console.log(`${ORANGE}Connecting to the database...`);
+    console.log(`${BLUE}Connecting to the database...${RESET}`);
     await sequelize.authenticate();
-    console.log(`${GREEN}Successfully connected to the database.`);
+    console.log(`${BLUE}Successfully connected to the database.${RESET}`);
 
     const { PORT } = process.env;
     app.listen(PORT, () => {
-      console.log(`${ORANGE}Server listenings on http://localhost:${PORT}`);
+      console.log(
+        `${ORANGE}Server listenings on http://localhost:${PORT}${RESET}`,
+      );
     });
   } catch (error) {
-    console.error(`${RED}Unable to connect to the database:`, error);
+    console.error(`${RED}Unable to connect to the database:${RESET}`, error);
     process.exit(1);
   }
 }
