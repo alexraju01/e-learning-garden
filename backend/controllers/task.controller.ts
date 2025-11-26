@@ -60,3 +60,14 @@ export const deleteTask = async (req: Request, res: Response, next: NextFunction
     data: null,
   });
 };
+
+//  ====================== Simple Task =====================
+
+export const getAllSimpleTask = async (_: Request, res: Response) => {
+  const simpleTasks = await Task.findAll({
+    attributes: {
+      exclude: ['createdAt', 'updatedAt', 'description'],
+    },
+  });
+  res.status(200).json({ status: 'success', results: simpleTasks.length, data: { simpleTasks } });
+};
