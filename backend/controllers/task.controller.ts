@@ -19,21 +19,29 @@ export const getOneTask = async (
 
   if (!task) return next(new AppError('No Task with this id!', 404));
 
-  res.status(200).json({ status: 'success', data: task });
+  res.status(200).json({ status: 'success', data: { task } });
 };
 
-export const updateTask = async (req: Request, res: Response) => {
+export const updateTask = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   const { id } = req.params;
   const updateData = req.body;
 
-  const updatedTask = await Task.update(updateData, {
+  const [updatedCount, updatedTask] = await Task.update(updateData, {
     where: { id },
     returning: true,
   });
+
+  if (!updatedCount)
+    return next(new AppError('ID with this task does not exist', 404));
+
   console.log(updateTask);
   res.status(200).json({
     message: 'success',
-    blog: updatedTask,
+    task: updatedTask,
   });
 };
 
