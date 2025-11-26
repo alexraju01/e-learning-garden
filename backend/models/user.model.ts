@@ -1,5 +1,4 @@
 import { DataTypes, Model, Optional } from 'sequelize';
-import bcrypt from 'bcryptjs';
 import { sequelize } from '../config/db';
 
 type Roles = 'project manager' | 'line manager' | 'user';
@@ -10,31 +9,18 @@ interface UserAttributes {
   email: string;
   password: string;
   role: Roles;
-  // startDate: Date;
-  // endDate?: Date;
 }
 
 // 2. Define the attributes required for creation (ID is optional)
-export type UserCreationAttributes = Optional<
-  UserAttributes,
-  'id'
->;
+export type UserCreationAttributes = Optional<UserAttributes, 'id'>;
 
 // User model class
 class User extends Model<UserAttributes, UserCreationAttributes> {
-  public id!: number;
-  public username!: string;
-  public email!: string;
-  public password!: string;
-  public role!: Roles;
-  // public startDate: Date;
-  // public endDate?: Date;
-
-  // // Timestamps
-  // public readonly createdAt: Date;
-
-
-
+  declare id: number;
+  declare username: string;
+  declare email: string;
+  declare password: string;
+  declare role: Roles;
 }
 
 // Initialize the User model
@@ -67,16 +53,6 @@ User.init(
       allowNull: false,
       defaultValue: 'user',
     },
-  
-    // startDate: {
-    //   type: DataTypes.DATE,
-    //   allowNull: false,
-    //   defaultValue: DataTypes.NOW,
-    // },
-    // endDate: {
-    //   type: DataTypes.DATE,
-    //   allowNull: true,
-    // },
   },
   {
     sequelize,
@@ -96,7 +72,7 @@ User.init(
     //     }
     //   },
     // },
-  }
+  },
 );
 
 export default User;

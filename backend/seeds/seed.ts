@@ -9,10 +9,8 @@ const usersData = require('./users.seed.json');
 const seedDatabase = async () => {
   try {
     await sequelize.sync({ force: true });
-    console.log(usersData);
     // 3. Seed Tasks
-    // await Task.bulkCreate(tasksData);
-    // console.log('🌱 Seeded Tasks Successfully!');
+
     await User.bulkCreate(usersData);
     console.log('🌱 Seeded Users Successfully!');
 
