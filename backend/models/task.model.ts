@@ -64,9 +64,9 @@ Task.init(
       type: DataTypes.TEXT,
       allowNull: true,
       validate: {
-        max: {
-          args: [2000],
-          msg: 'Description cannot be longer than 2000 characters.',
+        len: {
+          args: [0, 200], // Minimum 0, maximum 200 characters
+          msg: 'Description cannot be longer than 200 characters.',
         },
       },
     },
