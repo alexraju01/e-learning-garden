@@ -1,41 +1,67 @@
 import {
+	Priority,
 	TaskStatus,
 	type Activity,
 	type Task,
 	type TimeLog,
 } from "@/lib/types";
-import { useState } from "react";
+import { useEffect, useRef, useState, type RefObject } from "react";
 import { Button } from "./Button";
+import { cn } from "@/lib/classCombine";
+import { PlusIcon } from "./svgs";
 
 export function TaskWindow({ task }: { task?: Task }) {
 	const [title, setTitle] = useState(task?.title ?? "Default Title");
-	const [description, setDescription] = useState(
-		task?.description ?? "No Description"
-	);
+	const [description, setDescription] = useState(task?.description ?? "");
 	const [tags, setTags] = useState(task?.tags ?? ["tag 1", "tag 2"]);
-	const [status, setStatus] = useState(task?.status ?? 0);
+	const [status, setStatus] = useState(task?.status ?? 2);
 	const [dueDate, setDueDate] = useState(task?.dueDate ?? "??/??/????");
-	const [createdBy] = useState(task?.createdBy.username ?? "unknown");
+	const [createdBy] = useState(task?.createdBy.displayName ?? "unknown");
 	const [createdAt] = useState(task?.createdAt ?? "unknown");
 	const [assignedTo, setAssignedTo] = useState(task?.assignedTo);
 	const [activity, setActivity] = useState(task?.activity ?? []);
 	const [timeLogs, setTimeLogs] = useState(task?.timeLogs ?? []);
+	const [priority, setPriority] = useState(task?.prioity ?? 0);
+
+	function submitComment(e: string) {
+		//api call to add comment
+		console.log("Comment: ", e);
+
+		//if added, add it to the list of comments to display
+		//Push the comment to the db,
+		//get the returned comment with all values
+		//add it to the current comment list
+		// setActivity([...activity, newcomment])
+	}
+
+	/**@summary IF FALSE, CAN EDIT */
+	const canEdit = false; // true if admin+ or task owner	//SET THIS TO !FALSE !!!!!!!!
 
 	return (
 		<div className="absolute w-11/12 divide-y-2 max-h-11/12 border top-[calc(1/24*100%)] left-1/2 -translate-x-1/2">
 			{/* Top bar */}
-			<section className="flex bg-neutral-400 place-content-between px-2">
+			<section className="flex bg-neutral-400 place-content-between pl-2">
 				{/* Make this a dropdown button to change which list its under */}
 				<h3>Task List Name</h3>
 				<div className="gap-2 flex ">
 					<button>Actions</button>
-					<button>X</button>
+					<Button>
+						<PlusIcon classname="rotate-45" />
+					</Button>
 				</div>
 			</section>
-			<div className="grid grid-cols-[3fr_2fr] divide-x-2">
+			{/* Content */}
+			<div className="grid grid-cols-[3fr_2fr] divide-y-2 divide-x-2">
 				{/* Left side */}
 				<section className="bg-neutral-400 p-2">
-					<h1 className="text-4xl">{title}</h1>
+					<div className="flex flex-row place-content-between">
+						{/* Title */}
+						<TitleBox title={title} setTitle={setTitle} />
+						{/* Prio */}
+						<div className="outline place-self-start self-center p-1 px-4 bg-amber-300">
+							{Priority[priority]}
+						</div>
+					</div>
 					<p>created: {createdAt}</p>
 					<div className="flex flex-wrap gap-2">
 						{tags.map((tag, index) => (
@@ -45,12 +71,15 @@ export function TaskWindow({ task }: { task?: Task }) {
 					</div>
 					<h3>Description</h3>
 					{/* requires markdown editor */}
-					<p>{description}</p>
+					<DescriptionBox
+						loadedContent={description}
+						setLoadedContent={setDescription}
+					/>
 					{/* Comment section */}
 					<div>
 						<h2>Comments / Activity</h2>
 						{/* Input activity text area */}
-						<input placeholder="start typing..." />
+						<NewComment submit={submitComment} />
 						<ol>
 							{activity.map((activity, index) => (
 								<TaskActivity key={index} activity={activity} />
@@ -82,8 +111,8 @@ export function TaskWindow({ task }: { task?: Task }) {
 							{/* Assigned to */}
 							<div className="flex flex-row">
 								<p>Assigned to:</p>
-								{assignedTo?.map(({ username }, index) => (
-									<p key={index}>{username}</p>
+								{assignedTo?.map(({ displayName }, index) => (
+									<p key={index}>{displayName}</p>
 								))}
 							</div>
 							{/* Time log */}
@@ -100,6 +129,11 @@ export function TaskWindow({ task }: { task?: Task }) {
 						</div>
 					</div>
 				</section>
+				{/* Window Buttons */}
+				<div className="bg-neutral-400 col-span-2 flex justify-end gap-4 p-1">
+					<Button className="w-20">Cancel</Button>
+					<Button className="w-20">Save</Button>
+				</div>
 			</div>
 		</div>
 	);
@@ -125,6 +159,113 @@ function TimeLog({ timelog }: { timelog: TimeLog }) {
 			<p className="text-end outline">
 				On - {timelog.createAt.toLocaleTimeString()}
 			</p>
+		</div>
+	);
+}
+
+function TitleBox({
+	title,
+	setTitle,
+}: {
+	title: string;
+	setTitle: (title: string) => void;
+}) {
+	const ref = useRef<HTMLInputElement | null>(null);
+	const maxLength = 255;
+
+	useEffect(() => {
+		if (ref.current) ref.current.value = title;
+	}, [title]);
+
+	function validateTitle(e: string) {
+		e = e.trim() ?? "";
+		if (e.length > 0) {
+			setTitle(e);
+		} else {
+			if (ref.current) ref.current.value = title;
+		}
+	}
+
+	return (
+		<input
+			className="text-4xl"
+			ref={ref}
+			maxLength={maxLength}
+			onBlur={(e) => validateTitle(e.currentTarget.value)}
+		/>
+	);
+}
+
+/**
+ * Value is set on blur
+ */
+function DescriptionBox({
+	loadedContent,
+	setLoadedContent,
+}: {
+	loadedContent: string;
+	setLoadedContent: (e: string) => void;
+}) {
+	const ref = useRef<HTMLTextAreaElement | null>(null);
+	const maxLength = 255;
+
+	useEffect(() => {
+		if (ref.current) ref.current.value = loadedContent;
+	}, [loadedContent]);
+
+	return (
+		<div className="w-full relative ">
+			<textarea
+				ref={ref}
+				onBlur={(e) => setLoadedContent(e.currentTarget.value)}
+				placeholder="start typing your comment..."
+				maxLength={maxLength}
+				rows={3}
+				className="outline w-full px-1 resize-none"
+			/>
+			<p
+				className={cn(
+					"absolute text-sm bottom-1 right-5",
+					maxLength - (ref.current?.value.length ?? 0) == 0
+						? "text-red-500"
+						: "text-inherit"
+				)}>
+				{maxLength - (ref.current?.value.length ?? 0)}
+			</p>
+		</div>
+	);
+}
+
+function NewComment({ submit }: { submit: (e: string) => void }) {
+	const [commentMsg, setCommentMsg] = useState<string>("");
+	const maxLength = 255;
+
+	return (
+		<div className="flex flex-row w-full gap-2">
+			<div className="w-full relative ">
+				<textarea
+					value={commentMsg}
+					onChange={(e) => setCommentMsg(e.currentTarget.value)}
+					placeholder="start typing your comment..."
+					maxLength={maxLength}
+					rows={3}
+					className="outline w-full px-1 resize-none"
+				/>
+				<p
+					className={cn(
+						"absolute text-sm bottom-1 right-5",
+						maxLength - commentMsg.length == 0 ? "text-red-500" : "text-inherit"
+					)}>
+					{maxLength - commentMsg.length}
+				</p>
+			</div>
+			<Button
+				onClick={() => {
+					if (commentMsg.trim().length > 0) submit(commentMsg);
+				}}
+				className="aspect-square h-max self-center">
+				<PlusIcon />
+			</Button>
 		</div>
 	);
 }

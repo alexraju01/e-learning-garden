@@ -1,19 +1,17 @@
 interface User {
+	//CHANGE TO ACCOUNT -> USERS ARE PER WORKSPACE
 	id: number;
-	username: string;
-	password: string; //(hashed) //
-	email: string; //unique
-	role: Role; //select from a list (PM, Staff, LM)
-	line_manager?: User; //user ID //select name from user list
-	start_date: Date; //user start date
-	end_date: Date; //date user left company
-	department: string; // select from drop down list
+	displayName: string; //min 3 //max 100 //._numbers allowed
+	password: string; //(hashed) //max 255, min 8
+	email: string; //unique //max 255 //required
+	createdAt: Date;
+	role: Role; //select from a list (PM, Staff, LM)	//MOVE TO WORKSPACE USER
 }
 
 /**
  * @summary Roles for users, RBAC
  */
-type Role = "Admin" | "Staff";
+type Role = "Owner" | "Admin" | "User";
 
 /**
  * @summary Collection of Taskboards
@@ -45,7 +43,7 @@ export interface Task {
 	updatedAt?: number;
 
 	//Date related stuff
-	dueDate?: Date; //Could be unset
+	dueDate?: Date; //Could be unset, CANT BE SET IN PAST
 	completedDate?: Date;
 	timeLogs: TimeLog[];
 
@@ -53,10 +51,20 @@ export interface Task {
 	prioity: Priority;
 
 	//Details
-	title: string;
+	title: string; //min 1, Max 100
 	description?: string;
 	tags?: string[];
 	activity: Activity[];
+}
+
+export interface SimpleTask {
+	assignedTo: User[]; //make a ref to user id
+	dueDate?: Date; //Could be unset, CANT BE SET IN PAST
+	status: TaskStatus; //Or should we use
+	prioity: Priority;
+	title: string; //min 1, Max 100
+	tags?: string[];
+	timeSpend: number; //Sum of time logs
 }
 
 export enum Priority {
@@ -65,9 +73,10 @@ export enum Priority {
 	HIGH = 2,
 }
 export enum TaskStatus {
-	UNSET = 0,
+	NOTSTARTED = 0,
 	INPROGRESS = 1,
 	COMPLETED = 2,
+	INREVIEW = 3,
 }
 
 /**
