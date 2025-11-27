@@ -27,10 +27,10 @@ const signToken = (id: string): string => {
 };
 
 export const signUp = async (req: Request, res: Response) => {
-  const { username, email, password, confirmPassword, passwordChangedAt } = req.body;
+  const { displayname, email, password, confirmPassword, passwordChangedAt } = req.body;
 
   const newUser = await User.create({
-    username,
+    displayname,
     email,
     password,
     confirmPassword,
