@@ -1,7 +1,7 @@
 import { Model, DataTypes, Optional } from 'sequelize';
 import { sequelize } from '../config/db';
 
-type Role = 'Admin' | 'Regular';
+type Role = 'admin' | 'user';
 
 interface WorkspaceUserAttributes {
   id: number;
@@ -34,9 +34,9 @@ WorkspaceUser.init(
       primaryKey: true,
     },
     role: {
-      type: DataTypes.ENUM('Admin', 'Regular'),
+      type: DataTypes.ENUM('admin', 'user'),
       allowNull: false,
-      defaultValue: 'Regular',
+      defaultValue: 'user',
     },
     UserId: {
       type: DataTypes.INTEGER,

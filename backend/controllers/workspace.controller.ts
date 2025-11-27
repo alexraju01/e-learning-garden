@@ -6,30 +6,26 @@ import { sequelize } from '../config/db';
 import User from '../models/user.model';
 
 export const getAllWorkspace = async (req: Request, res: Response) => {
-  // req.user.id should contain the logged-in user’s ID
-  const userId = req?.user?.dataValues?.id;
-
-  // Find all workspaces the user belongs to
   const workspaces = await Workspace.findAll({
     include: [
       {
         model: User,
-        as: 'Members', // Must match your association alias in Workspace model
-        attributes: ['id', 'displayname', 'email'], // Correct field names
+        as: 'Members',
+        // 1. Keep the desired User attributes
+        attributes: ['id', 'displayname', 'email'],
+
+        // 2. Control the junction table (WorkspaceUser) attributes
         through: {
+          // Only include the 'role' field from the WorkspaceUser junction table.
+          // This keeps the user's role specific to that workspace, and removes the other junction fields.
           attributes: ['role'],
         },
-        where: { id: userId }, // only include the logged-in user
-        required: true, // ensures the workspace has the user as member
       },
     ],
     order: [['id', 'asc']],
   });
-  res.status(200).json({
-    status: 'success',
-    results: workspaces.length,
-    data: { workspaces },
-  });
+
+  res.status(200).json({ status: 'success', results: workspaces.length, data: { workspaces } });
 };
 
 export const createWorkspace = async (req: Request, res: Response, next: NextFunction) => {
@@ -67,7 +63,7 @@ export const createWorkspace = async (req: Request, res: Response, next: NextFun
     {
       WorkspaceId: newWorkspace.id,
       UserId: creatorId,
-      role: 'Admin',
+      role: 'admin',
     },
     { transaction: t },
   );
@@ -81,7 +77,7 @@ export const createWorkspace = async (req: Request, res: Response, next: NextFun
   res.status(201).json({
     message: 'Workspace created successfully.',
     workspace: newWorkspace,
-    role: 'Admin',
+    role: 'admin',
   });
 };
 
@@ -136,13 +132,13 @@ export const joinWorkspace = async (req: Request, res: Response, next: NextFunct
   await WorkspaceUser.create({
     WorkspaceId: workspace.dataValues.id,
     UserId: userId,
-    role: 'Regular', // Joining users become Regular
+    role: 'user', // Joining users become Regular
   });
 
   res.json({
     status: 'success',
     message: `Successfully joined workspace: ${workspace.name}`,
     workspaceId: workspace.id,
-    role: 'Regular',
+    role: 'user',
   });
 };
