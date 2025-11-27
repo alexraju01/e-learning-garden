@@ -1,25 +1,23 @@
 import { DataTypes, Model, Optional } from 'sequelize';
 import { sequelize } from '../config/db';
 import crypto from 'crypto';
+import User from './user.model';
+import { WorkspaceUser } from './workspaceUser.model';
 
-// User attributes interface
 interface WorkspaceAttributes {
   id: number;
   name: string;
   inviteCode: string;
 }
 
-// 2. Define the attributes required for creation (ID is optional)
 export type WorkspaceCreationAttributes = Optional<WorkspaceAttributes, 'id' | 'inviteCode'>;
 
-// User model class
 class Workspace extends Model<WorkspaceAttributes, WorkspaceCreationAttributes> {
   declare id: number;
   declare name: string;
   declare inviteCode: string;
 }
 
-// Initialize the User model
 Workspace.init(
   {
     id: {
@@ -45,6 +43,21 @@ Workspace.init(
 // HOOKS
 Workspace.beforeCreate(async (workspace) => {
   workspace.inviteCode = crypto.randomBytes(4).toString('hex').toUpperCase();
+});
+
+// ######### Define Associations ##########
+
+// User <-> Workspace (M:M)
+User.belongsToMany(Workspace, {
+  through: WorkspaceUser,
+  foreignKey: 'UserId',
+  as: 'Workspaces',
+});
+
+Workspace.belongsToMany(User, {
+  through: WorkspaceUser,
+  foreignKey: 'WorkspaceId',
+  as: 'Members',
 });
 
 export default Workspace;
