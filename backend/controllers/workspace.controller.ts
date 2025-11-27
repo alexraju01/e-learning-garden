@@ -12,13 +12,18 @@ export const getAllWorkspace = async (_: Request, res: Response) => {
   res.status(200).json({ status: 'success', results: workspaces.length, data: { workspaces } });
 };
 
-export const createWorkspace = async (req: Request, res: Response) => {
+export const createWorkspace = async (req: Request, res: Response, next: NextFunction) => {
   const { name } = req.body;
   const creatorId = req.user?.dataValues?.id;
-
+  console.log(name);
   if (!creatorId) {
     throw new AppError('Authentication required. User ID is missing.', 401);
   }
+
+  const existingWorkspace = await Workspace.findOne({ where: { name } });
+  console.log(existingWorkspace);
+  if (existingWorkspace) return next(new AppError('A workspace with this name already exist', 400));
+
   //  Transaction makes it so that we can group the db opeeration
   const t = await sequelize.transaction();
   // 1. Create Workspace
