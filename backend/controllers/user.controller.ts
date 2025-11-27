@@ -33,3 +33,30 @@ export const deleteUser = async (req: Request, res: Response, next: NextFunction
     data: null,
   });
 };
+
+export const updateDisplayName = async (req: Request, res: Response, next: NextFunction) => {
+  const { displayname } = req.body;
+
+  // Validate displayname is provided
+  if (!displayname) {
+    return next(new AppError('Display name is required', 400));
+  }
+
+  // Get the authenticated user from req.user (set by protect middleware)
+  const user = req.user;
+
+  if (!user) {
+    return next(new AppError('User not authenticated', 401));
+  }
+
+  // Update the displayname
+  await user.update({ displayname });
+
+  // Return the updated user
+  res.status(200).json({
+    status: 'success',
+    data: {
+      user,
+    },
+  });
+};
