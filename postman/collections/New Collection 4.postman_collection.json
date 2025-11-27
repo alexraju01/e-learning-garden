@@ -20,6 +20,15 @@
           ]
         },
         "method": "GET",
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
         "url": {
           "raw": "{{URL}}api/v1/workspace",
           "host": [
@@ -36,10 +45,20 @@
       "name": "Create WorkSpace",
       "id": "7b80216a-aea7-4abf-b366-dc69445f2555",
       "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{JWT}}",
+              "type": "string"
+            }
+          ]
+        },
         "method": "POST",
         "body": {
           "mode": "raw",
-          "raw": "{ \r\n    \"name\": \"creating testing workspace\" \r\n}",
+          "raw": "{\r\n    \"name\": \"checkout new room\"\r\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -47,13 +66,14 @@
           }
         },
         "url": {
-          "raw": "{{URL}}api/v1/workspace",
+          "raw": "{{URL}}api/v1/workspace/create",
           "host": [
             "{{URL}}api"
           ],
           "path": [
             "v1",
-            "workspace"
+            "workspace",
+            "create"
           ]
         }
       }
@@ -65,31 +85,13 @@
         "method": "PATCH",
         "body": {
           "mode": "raw",
-          "raw": "",
+          "raw": "{\r\n    \"name\": \"Engineering Team patcheed\"\r\n}",
           "options": {
             "raw": {
               "language": "json"
             }
           }
         },
-        "url": {
-          "raw": "{{URL}}api/v1/workspace/1",
-          "host": [
-            "{{URL}}api"
-          ],
-          "path": [
-            "v1",
-            "workspace",
-            "1"
-          ]
-        }
-      }
-    },
-    {
-      "name": "New Request",
-      "id": "1395d004-9d6c-446d-8a24-b800730d1e5d",
-      "request": {
-        "method": "GET",
         "url": {
           "raw": "{{URL}}api/v1/workspace/1",
           "host": [

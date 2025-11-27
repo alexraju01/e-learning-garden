@@ -8,6 +8,8 @@ import { protect } from '../controllers/auth.controller';
 
 export const workspaceRouter = Router();
 
-workspaceRouter.route('/').get(protect, getAllWorkspace).post(protect, createWorkspace);
+workspaceRouter.route('/').get(protect, getAllWorkspace);
+
+workspaceRouter.route('/create').post(protect, createWorkspace);
 
 workspaceRouter.route('/:id').patch(updateWorkspace);
