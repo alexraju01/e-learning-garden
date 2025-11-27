@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import Task from '../models/task.model';
 import AppError from '../lib/AppError';
+import { Op } from 'sequelize';
 
 export const getAllTasks = async (_: Request, res: Response) => {
   const tasks = await Task.findAll();
@@ -105,8 +106,15 @@ export const searchTasks = async (req: Request, res: Response, next: NextFunctio
     return next(new AppError('Search query can only contain alphabetic characters and spaces', 400));
   }
 
-  // Basic response for now
-  const tasks: any[] = [];
+  // Search tasks by title and description (case-insensitive, partial matching)
+  const tasks = await Task.findAll({
+    where: {
+      [Op.or]: [
+        { title: { [Op.iLike]: `%${trimmedQuery}%` } },
+        { description: { [Op.iLike]: `%${trimmedQuery}%` } },
+      ],
+    },
+  });
 
   res.status(200).json({
     status: 'success',
