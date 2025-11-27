@@ -106,9 +106,19 @@ export const searchTasks = async (req: Request, res: Response, next: NextFunctio
     return next(new AppError('Search query can only contain alphabetic characters and spaces', 400));
   }
 
+  // Get authenticated user (set by protect middleware)
+  const user = req.user;
+
+  if (!user) {
+    return next(new AppError('User not authenticated', 401));
+  }
+
   // Search tasks by title and description (case-insensitive, partial matching)
+  // TODO: Add user authorization filter when Task-User relationship is implemented
+  // Filter by userId to ensure users only see their own tasks
   const tasks = await Task.findAll({
     where: {
+      // userId: user.id, // Uncomment when Task model has userId field
       [Op.or]: [
         { title: { [Op.iLike]: `%${trimmedQuery}%` } },
         { description: { [Op.iLike]: `%${trimmedQuery}%` } },
