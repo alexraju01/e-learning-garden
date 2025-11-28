@@ -2,7 +2,7 @@ import { DataTypes, Model, Optional } from 'sequelize';
 import { sequelize } from '../config/db';
 import bcrypt from 'bcryptjs';
 
-type Roles = 'admin' | 'user';
+export type Roles = 'admin' | 'user';
 
 // User attributes interface
 interface UserAttributes {
@@ -13,10 +13,12 @@ interface UserAttributes {
   confirmPassword: string;
   role?: Roles;
   passwordChangedAt: Date | null;
+
+  currentWorkspaceRole?: Roles;
 }
 
 // 2. Define the attributes required for creation (ID is optional)
-export type UserCreationAttributes = Optional<UserAttributes, 'id'>;
+export type UserCreationAttributes = Optional<UserAttributes, 'id' | 'currentWorkspaceRole'>;
 
 // User model class
 class User extends Model<UserAttributes, UserCreationAttributes> {
@@ -27,6 +29,8 @@ class User extends Model<UserAttributes, UserCreationAttributes> {
   declare confirmPassword: string;
   declare role?: Roles;
   declare passwordChangedAt: Date | null;
+
+  currentWorkspaceRole?: Roles;
 
   correctPassword!: (candidatePassword: string) => Promise<boolean>;
   changedPasswordAfter!: (JWTTimestamp: number) => boolean;

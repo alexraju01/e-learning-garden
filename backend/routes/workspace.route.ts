@@ -1,11 +1,12 @@
 import { Router } from 'express';
 import {
   createWorkspace,
+  deleteWorkspace,
   getAllWorkspace,
   joinWorkspace,
   updateWorkspace,
 } from '../controllers/workspace.controller';
-import { protect } from '../controllers/auth.controller';
+import { protect, restrictTo } from '../controllers/auth.controller';
 
 export const workspaceRouter = Router();
 
@@ -14,4 +15,7 @@ workspaceRouter.route('/').get(protect, getAllWorkspace);
 workspaceRouter.route('/create').post(protect, createWorkspace);
 workspaceRouter.route('/join').post(protect, joinWorkspace);
 
-workspaceRouter.route('/:id').patch(updateWorkspace);
+workspaceRouter
+  .route('/:id')
+  .patch(protect, updateWorkspace)
+  .delete(protect, restrictTo('admin'), deleteWorkspace);

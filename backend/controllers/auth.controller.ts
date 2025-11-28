@@ -1,7 +1,8 @@
 import { NextFunction, Request, Response } from 'express';
-import User from '../models/user.model';
+import User, { Roles } from '../models/user.model';
 import jwt, { Secret } from 'jsonwebtoken';
 import AppError from '../lib/AppError';
+import { WorkspaceUser } from '../models/workspaceUser.model';
 
 //#region globalRequest
 declare global {
@@ -102,4 +103,43 @@ export const protect = async (req: Request, res: Response, next: NextFunction) =
   //   Grant Access to the protected routes
   req.user = currentUser;
   next();
+};
+
+export const restrictTo = (...roles: string[]) => {
+  return async (req: Request, res: Response, next: NextFunction) => {
+    const userId = req.user?.id;
+    const workspaceId = req.params.id; // Expecting the workspace ID from the URL parameter
+
+    if (!userId) {
+      return next(new AppError('User authentication failed.', 401));
+    }
+
+    // 1. Find the user's role for the specific workspace
+    const workspaceUser = await WorkspaceUser.findOne({
+      where: {
+        WorkspaceId: workspaceId,
+        UserId: userId,
+      },
+    });
+
+    // 2. Check if the user is a member at all
+    if (!workspaceUser) {
+      return next(new AppError('You are not a member of this workspace.', 403));
+    }
+
+    // 3. Check if the user's role is included in the allowed roles
+    const userRole = workspaceUser.role;
+
+    if (!roles.includes(userRole)) {
+      // If the required roles are 'admin' but the user is 'user'
+      return next(new AppError('You do not have permission to perform this action.', 403));
+    }
+
+    // If the check passes, attach the role to the request for later use (optional but helpful)
+    if (req.user) {
+      req.user.currentWorkspaceRole = userRole;
+    }
+
+    next();
+  };
 };

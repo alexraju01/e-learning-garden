@@ -56,14 +56,15 @@ export const getAllWorkspace = async (req: Request, res: Response) => {
 };
 
 export const createWorkspace = async (req: Request, res: Response, next: NextFunction) => {
-  const { name } = req.body;
+  const { name: rawName } = req.body;
   const creatorId = req.user?.dataValues?.id;
+  const name = rawName ? rawName.trim() : '';
 
   if (!creatorId) {
     throw new AppError('Authentication required. User ID is missing', 401);
   }
 
-  if (!name || name.trim() === '') {
+  if (!name || name === '') {
     return next(new AppError('Workspace name is required', 400));
   }
 
@@ -96,6 +97,13 @@ export const createWorkspace = async (req: Request, res: Response, next: NextFun
 
   if (!workspaceUser) {
     throw new AppError('Failed to add user to workspace.', 500);
+  }
+
+  if (req.user) {
+    req.user.currentWorkspaceRole = 'admin';
+    // Or if req.user holds the Sequelize model instance:
+    // req.user.role = 'admin'; // If the user model has a main role property being updated
+    console.log(req.user.currentWorkspaceRole);
   }
 
   await t.commit();
@@ -154,11 +162,11 @@ export const joinWorkspace = async (req: Request, res: Response, next: NextFunct
     );
   }
 
-  // 3. Add the user to the WorkspaceUser join table with 'Regular' role
+  // 3. Add the user to the WorkspaceUser join table with 'user' role
   await WorkspaceUser.create({
     WorkspaceId: workspace.dataValues.id,
     UserId: userId,
-    role: 'user', // Joining users become Regular
+    role: 'user',
   });
 
   res.json({
@@ -166,5 +174,30 @@ export const joinWorkspace = async (req: Request, res: Response, next: NextFunct
     message: `Successfully joined workspace: ${workspace.name}`,
     workspaceId: workspace.id,
     role: 'user',
+  });
+};
+
+export const deleteWorkspace = async (req: Request, res: Response, next: NextFunction) => {
+  const { id } = req.params;
+
+  console.log(id);
+  // Find the workspace first
+  const workspace = await Workspace.findOne({ where: { id } });
+  console.log(workspace);
+  if (!workspace) {
+    return next(new AppError('This workspace does not exist', 404));
+  }
+
+  // Check if the current user is the creator
+  //   if (workspace.creatorId !== req.user.id) {
+  //     return next(new AppError('You do not have permission to delete this workspace', 403));
+  //   }
+
+  // Delete the workspace
+  await Workspace.destroy({ where: { id } });
+
+  res.status(204).json({
+    status: 'success',
+    data: null,
   });
 };
