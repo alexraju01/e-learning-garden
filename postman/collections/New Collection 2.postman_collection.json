@@ -97,6 +97,24 @@
           ]
         }
       }
+    },
+    {
+      "name": "Forgot Password",
+      "id": "a4a7d258-a43c-4ebf-9be7-37a3847aaa64",
+      "request": {
+        "method": "POST",
+        "url": {
+          "raw": "{{URL}}api/v1/user/forgot-password",
+          "host": [
+            "{{URL}}api"
+          ],
+          "path": [
+            "v1",
+            "user",
+            "forgot-password"
+          ]
+        }
+      }
     }
   ]
 }

@@ -5,9 +5,21 @@ import { globalErrorHandler } from './controllers/error.controller';
 import AppError from './lib/AppError';
 import { userRouter } from './routes/user.route';
 import { workspaceRouter } from './routes/workspace.route';
+import rateLimit from 'express-rate-limit';
+import helmet from 'helmet';
 
 const app = express();
-app.use(express.json());
+
+const limiter = rateLimit({
+  windowMs: 60 * 60 * 1000,
+  limit: 200,
+  message: 'Too many request from this IP Address, Please try again in an hour!',
+});
+
+// Helemt sets HTTP security headers
+app.use(helmet());
+app.use('/api', limiter);
+app.use(express.json({}));
 
 // Resouces Routing
 app.use('/api/v1/task', taskRouter);

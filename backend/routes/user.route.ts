@@ -1,5 +1,11 @@
 import { Router } from 'express';
-import { deleteAccount, deleteUser, getAllUsers, getOneUser, updateDisplayName } from '../controllers/user.controller';
+import {
+  deleteAccount,
+  deleteUser,
+  getAllUsers,
+  getOneUser,
+  updateDisplayName,
+} from '../controllers/user.controller';
 import { login, protect, signUp } from '../controllers/auth.controller';
 
 export const userRouter = Router();
