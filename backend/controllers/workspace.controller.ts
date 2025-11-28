@@ -4,24 +4,30 @@ import AppError from '../lib/AppError';
 import { WorkspaceUser } from '../models/workspaceUser.model';
 import { sequelize } from '../config/db';
 import User from '../models/user.model';
-
+import { Op, Sequelize } from 'sequelize';
+// ... or however you are importing other things from Sequelize
 export const getAllWorkspace = async (req: Request, res: Response) => {
+  // Assuming you have the selected user's id
+  const userId = req?.user?.id;
+
   const workspaces = await Workspace.findAll({
     include: [
       {
         model: User,
-        as: 'Members',
-        // 1. Keep the desired User attributes
+        as: 'AllMembers',
         attributes: ['id', 'displayname', 'email'],
-
-        // 2. Control the junction table (WorkspaceUser) attributes
-        through: {
-          // Only include the 'role' field from the WorkspaceUser junction table.
-          // This keeps the user's role specific to that workspace, and removes the other junction fields.
-          attributes: ['role'],
-        },
+        through: { attributes: ['role'] },
       },
     ],
+    where: {
+      id: {
+        [Op.in]: Sequelize.literal(`(
+        SELECT "WorkspaceId"
+        FROM "WorkspaceUsers"
+        WHERE "UserId" = ${userId}
+      )`),
+      },
+    },
     order: [['id', 'asc']],
   });
 

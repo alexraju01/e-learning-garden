@@ -16,6 +16,8 @@ class Workspace extends Model<WorkspaceAttributes, WorkspaceCreationAttributes> 
   declare id: number;
   declare name: string;
   declare inviteCode: string;
+
+  declare Members?: (User & { WorkspaceUser: WorkspaceUser })[];
 }
 
 Workspace.init(
@@ -69,7 +71,7 @@ User.belongsToMany(Workspace, {
 Workspace.belongsToMany(User, {
   through: WorkspaceUser,
   foreignKey: 'WorkspaceId',
-  as: 'Members',
+  as: 'AllMembers',
 });
 
 export default Workspace;
