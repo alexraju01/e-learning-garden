@@ -68,7 +68,18 @@ export const createWorkspace = async (req: Request, res: Response, next: NextFun
     return next(new AppError('Workspace name is required', 400));
   }
 
-  const existingWorkspace = await Workspace.findOne({ where: { name } });
+  const existingWorkspace = await Workspace.findOne({
+    where: { name },
+    include: [
+      {
+        model: User,
+        as: 'AllMembers',
+        where: { id: creatorId },
+        required: true,
+      },
+    ],
+  });
+
   if (existingWorkspace) return next(new AppError('A workspace with this name already exist', 400));
 
   //  Transaction makes it so that we can group the db opeeration

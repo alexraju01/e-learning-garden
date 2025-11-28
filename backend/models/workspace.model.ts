@@ -32,7 +32,7 @@ Workspace.init(
     name: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true,
+      //   unique: false,
       validate: {
         notEmpty: {
           msg: 'Workspace name is required',
