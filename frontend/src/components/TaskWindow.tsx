@@ -9,6 +9,29 @@ import { useEffect, useRef, useState, type RefObject } from "react";
 import { Button } from "./Button";
 import { cn } from "@/lib/classCombine";
 import { PlusIcon } from "./svgs";
+import { useOnClickOutside } from "usehooks-ts";
+
+/*
+
+WORKSPACE -> Owner creates
+
+TASK LIST -> PEOPLE WITH WRITE ACCESS CAN CRUD
+
+TASKS-> 
+	CAN CRUD 
+	CAN READ (ALLOWS COMMENTS AND TIME LOGS)
+
+OWNER = OWENER OF WORKSAPCE, FULL ACCESS
+ADMIN = FULL CRUD ACCESS (BELOW WORKSPACE LEVEL) CANT EDIT WORKSPACE NAME OR DELETE 
+USER = READ ALL (CAN COMMENT AND TIME LOG ON TASKS)
+
+
+
+
+*/
+
+
+
 
 export function TaskWindow({ task }: { task?: Task }) {
 	const [title, setTitle] = useState(task?.title ?? "Default Title");
@@ -162,13 +185,14 @@ export function TaskWindow({ task }: { task?: Task }) {
 					</div>
 				</div>
 			</div>
-			<TimeLogPanel />
+			{/* <TimeLogPanel /> */}
 		</>
 	);
 }
 
 function TimeLogPanel() {
 	const [logContent, setLogContent] = useState("");
+	const pannelRef = useRef<any>(null);
 	const maxLength = 255;
 
 	function handleCancel() {
@@ -183,9 +207,13 @@ function TimeLogPanel() {
 		console.log("Close time log");
 	}
 
+	useOnClickOutside(pannelRef, handleCloseTimeLog);
+
 	return (
-		<div className="absolute bg-black/10 w-full h-full grid place-items-center">
-			<div className="grid grid-rows-[auto_1fr_auto] max-w-xl w-11/12 h-64 bg-neutral-500 outline divide-y-2">
+		<div className="absolute bg-black/20 w-full h-full grid place-items-center">
+			<div
+				ref={pannelRef}
+				className="grid grid-rows-[auto_1fr_auto] max-w-xl w-11/12 h-64 bg-neutral-500 outline divide-y-2">
 				<div className="h-12  place-items-center place-content-between gap-4 flex px-1">
 					<h2>Log Time</h2>
 					<Button onClick={handleCloseTimeLog}>
