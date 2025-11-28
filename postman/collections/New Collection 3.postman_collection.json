@@ -11,13 +11,14 @@
       "request": {
         "method": "GET",
         "url": {
-          "raw": "{{URL}}api/v1/simple-task",
+          "raw": "{{URL}}api/v1/task/simple",
           "host": [
             "{{URL}}api"
           ],
           "path": [
             "v1",
-            "simple-task"
+            "task",
+            "simple"
           ]
         }
       }

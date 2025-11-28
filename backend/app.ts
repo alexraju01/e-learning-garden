@@ -4,6 +4,7 @@ import { taskRouter } from './routes/task.route';
 import { globalErrorHandler } from './controllers/error.controller';
 import AppError from './lib/AppError';
 import { userRouter } from './routes/user.route';
+import { workspaceRouter } from './routes/workspace.route';
 
 const app = express();
 app.use(express.json());
@@ -11,6 +12,7 @@ app.use(express.json());
 // Resouces Routing
 app.use('/api/v1/task', taskRouter);
 app.use('/api/v1/user', userRouter);
+app.use('/api/v1/workspace', workspaceRouter);
 
 app.get('/*splat', async (req, res, next) => {
   next(new AppError(`can't find the ${req.originalUrl} on the this server`, 404));

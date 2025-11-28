@@ -76,25 +76,24 @@ export const deleteAccount = async (req: Request, res: Response, next: NextFunct
     return next(new AppError('Password confirmation is required to delete your account', 400));
   }
 
-  const authenticatedUser = req.user;
+  // Get the logged in user
+  const user = await User.scope('withPasswords').findByPk(req.user?.id);
 
-  if (!authenticatedUser) {
-    return next(new AppError('User not authenticated', 401));
+  if (!user) {
+    return next(new AppError('User not found.', 404));
   }
 
-  const userWithPassword = await User.scope('withPasswords').findByPk(authenticatedUser.id);
-
-  if (!userWithPassword) {
-    return next(new AppError('User not found', 404));
+  if (!user.password) {
+    return next(new AppError('User password not found in database. Cannot verify.', 500));
   }
 
-  const isPasswordCorrect = await userWithPassword.correctPassword(password);
-
-  if (!isPasswordCorrect) {
+  // Check password
+  const isCorrect = await user.correctPassword(password);
+  if (!isCorrect) {
     return next(new AppError('Incorrect password. Account deletion failed.', 401));
   }
 
-  await userWithPassword.destroy();
+  await user.destroy();
 
   res.status(204).json({
     status: 'success',

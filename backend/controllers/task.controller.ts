@@ -3,7 +3,9 @@ import Task from '../models/task.model';
 import AppError from '../lib/AppError';
 
 export const getAllTasks = async (_: Request, res: Response) => {
-  const tasks = await Task.findAll();
+  const tasks = await Task.findAll({
+    order: [['id', 'asc']],
+  });
   res.status(200).json({ status: 'success', results: tasks.length, data: { tasks: tasks } });
 };
 

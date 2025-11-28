@@ -34,7 +34,7 @@
         "method": "POST",
         "body": {
           "mode": "raw",
-          "raw": " {\r\n    \"username\": \"tesdt4\",\r\n    \"email\": \"tesdt4@example.com\",\r\n    \"password\": \"Password123!\",\r\n    \"confirmPassword\": \"Password123!\",\r\n    \"passwordChangedAt\": \"2012-05-27\"\r\n    \r\n  }",
+          "raw": "{\r\n \"displayname\": \"line_manager_jane\",\r\n    \"email\": \"lmjane@example.com\",\r\n    \"password\": \"Password123!\",\r\n    \"confirmPassword\": \"Password123!\"\r\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -58,10 +58,27 @@
       "name": "Login",
       "id": "c70202b7-b087-4ae1-8510-80db2817e0c3",
       "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{JWT}}",
+              "type": "string"
+            }
+          ]
+        },
         "method": "POST",
+        "header": [
+          {
+            "key": "",
+            "value": "",
+            "type": "text"
+          }
+        ],
         "body": {
           "mode": "raw",
-          "raw": " {\r\n    \"email\": \"line_manager_john\",\r\n    \"password\": \"Password123!\"\r\n  }",
+          "raw": "",
           "options": {
             "raw": {
               "language": "json"
