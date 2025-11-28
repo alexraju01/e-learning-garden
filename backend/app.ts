@@ -7,6 +7,7 @@ import { userRouter } from './routes/user.route';
 import { workspaceRouter } from './routes/workspace.route';
 import rateLimit from 'express-rate-limit';
 import helmet from 'helmet';
+import cookieParser from 'cookie-parser';
 
 const app = express();
 
@@ -19,7 +20,13 @@ const limiter = rateLimit({
 // Helemt sets HTTP security headers
 app.use(helmet());
 app.use('/api', limiter);
-app.use(express.json({}));
+app.use(express.json());
+app.use(cookieParser());
+
+app.use((req, res, next) => {
+  //   console.log(req.cookies);
+  next();
+});
 
 // Resouces Routing
 app.use('/api/v1/task', taskRouter);

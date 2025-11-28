@@ -1,0 +1,137 @@
+{
+  "info": {
+    "_postman_id": "31e61e80-58f2-4a42-bf11-82accc95347f",
+    "name": "Users",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "33181032"
+  },
+  "item": [
+    {
+      "name": "Get All users",
+      "id": "f669fb28-814d-4ef7-ac3b-4462f343c992",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{URL}}api/v1/user",
+          "host": [
+            "{{URL}}api"
+          ],
+          "path": [
+            "v1",
+            "user"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get Single User",
+      "id": "a2da423a-d5db-40b1-8b34-df130618eca3",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{JWT}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{URL}}api/v1/user/4",
+          "host": [
+            "{{URL}}api"
+          ],
+          "path": [
+            "v1",
+            "user",
+            "4"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Delete User",
+      "id": "5fab4990-c416-4e53-823b-63018197d7d8",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{JWT}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "DELETE",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{URL}}api/v1/user/1",
+          "host": [
+            "{{URL}}api"
+          ],
+          "path": [
+            "v1",
+            "user",
+            "1"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Delete Account",
+      "id": "730e153b-f672-49f3-ae95-37363111a330",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{JWT}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "DELETE",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"password\": \"Password123!\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{URL}}api/v1/user/me",
+          "host": [
+            "{{URL}}api"
+          ],
+          "path": [
+            "v1",
+            "user",
+            "me"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}

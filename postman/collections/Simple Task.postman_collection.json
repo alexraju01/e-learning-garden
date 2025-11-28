@@ -1,0 +1,30 @@
+{
+  "info": {
+    "_postman_id": "085fa936-397c-48fe-8712-3460c3526d64",
+    "name": "Simple Task",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "33181032"
+  },
+  "item": [
+    {
+      "name": "Get All Simple Task",
+      "id": "5b097022-5ad4-4bcd-9fdc-07f783464830",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{URL}}api/v1/task/simple",
+          "host": [
+            "{{URL}}api"
+          ],
+          "path": [
+            "v1",
+            "task",
+            "simple"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}

@@ -21,7 +21,7 @@
     "status": "in progress",
     "priority": "high",
     "tags": ["api", "routes", "crud"],
-    "dueBy": "2025-11-30T09:00:00Z"
+    "dueBy": "2025-12-02T09:00:00Z"
   },
   {
     "title": "Write Unit Tests for Model",
@@ -45,7 +45,7 @@
     "status": "in progress",
     "priority": "high",
     "tags": ["bug", "fix", "critical"],
-    "dueBy": "2025-11-27T16:00:00Z"
+    "dueBy": "2025-12-01T16:00:00Z"
   },
   {
     "title": "Review PR #42: Database Seeding",
@@ -69,7 +69,7 @@
     "status": "in review",
     "priority": "medium",
     "tags": ["refactor", "backend", "performance"],
-    "dueBy": "2025-12-02T10:30:00Z"
+    "dueBy": "2025-12-03T10:30:00Z"
   },
   {
     "title": "Plan Next Sprint Features",
@@ -77,6 +77,6 @@
     "status": "not started",
     "priority": "low",
     "tags": ["planning", "meeting"],
-    "dueBy": "2025-12-03T18:00:00Z"
+    "dueBy": "2025-12-04T18:00:00Z"
   }
 ]
