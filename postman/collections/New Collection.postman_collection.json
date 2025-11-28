@@ -1,0 +1,125 @@
+{
+  "info": {
+    "_postman_id": "bf8c971e-7bf0-4b39-9e2d-df560a6af392",
+    "name": "Tasks",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Get All Task",
+      "id": "01180d81-ceda-46c5-8b4d-1a73b22386b2",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{JWT}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "url": {
+          "raw": "{{URL}}api/v1/task",
+          "host": [
+            "{{URL}}api"
+          ],
+          "path": [
+            "v1",
+            "task"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Get One Task",
+      "id": "29f292dc-1362-4f64-acad-06df222f63c8",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{URL}}api/v1/task/2",
+          "host": [
+            "{{URL}}api"
+          ],
+          "path": [
+            "v1",
+            "task",
+            "2"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Update Task",
+      "id": "d58b0158-a5bd-448d-8864-ec2885356ec4",
+      "request": {
+        "method": "PATCH",
+        "body": {
+          "mode": "raw",
+          "raw": "  {\r\n    \"title\": \"2asdFFfd5sfssdsdddddddssd f\",\r\n    \"description\": \"testing\",\r\n    \"status\": \"in review\",\r\n    \"priority\": \"medium\",\r\n    \"tags\": [\"refactor\", \"backend\", \"performance\"],\r\n    \"dueBy\": \"2025-12-02T10:30:00Z\"\r\n  }",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{URL}}api/v1/task/1",
+          "host": [
+            "{{URL}}api"
+          ],
+          "path": [
+            "v1",
+            "task",
+            "1"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Create Task",
+      "id": "da741a6e-f6d0-468c-96e9-3604751c3e76",
+      "request": {
+        "method": "POST",
+        "body": {
+          "mode": "raw",
+          "raw": "  {\r\n    \"title\": \"2asdFFfd5sfssdssd\",\r\n    \"description\": \"testing\",\r\n    \"status\": \"in review\",\r\n    \"priority\": \"medium\",\r\n    \"tags\": [\"refactor\", \"backend\", \"performance\",3],\r\n    \"dueBy\": \"2025-12-02T10:30:00Z\"\r\n  }",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{URL}}api/v1/task",
+          "host": [
+            "{{URL}}api"
+          ],
+          "path": [
+            "v1",
+            "task"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Delete Task",
+      "id": "3f3d452f-2237-472f-bce4-87406347bdca",
+      "request": {
+        "method": "DELETE",
+        "url": {
+          "raw": "{{URL}}api/v1/task/1145",
+          "host": [
+            "{{URL}}api"
+          ],
+          "path": [
+            "v1",
+            "task",
+            "1145"
+          ]
+        }
+      }
+    }
+  ]
+}

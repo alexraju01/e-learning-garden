@@ -1,0 +1,32 @@
+[
+  {
+    "displayname": "pm_lead",
+    "email": "pmlead@example.com",
+    "password": "Password123!",
+    "confirmPassword": "Password123!"
+  },
+  {
+    "displayname": "line_manager_jane",
+    "email": "lmjane@example.com",
+    "password": "Password123!",
+    "confirmPassword": "Password123!"
+  },
+  {
+    "displayname": "line_manager_john",
+    "email": "lmjohn@example.com",
+    "password": "Password123!",
+    "confirmPassword": "Password123!"
+  },
+  {
+    "displayname": "collab_user_1",
+    "email": "user1@example.com",
+    "password": "Password123!",
+    "confirmPassword": "Password123!"
+  },
+  {
+    "displayname": "collab_user_2",
+    "email": "user2@example.com",
+    "password": "Password123!",
+    "confirmPassword": "Password123!"
+  }
+]

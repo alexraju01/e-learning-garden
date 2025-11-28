@@ -1,0 +1,128 @@
+{
+  "info": {
+    "_postman_id": "31dfcc4a-a2e1-445c-a203-9715722c51c0",
+    "name": "Users",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Get All users",
+      "id": "403cf3fc-893c-4d70-9f8e-b1758335e444",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{URL}}api/v1/user",
+          "host": [
+            "{{URL}}api"
+          ],
+          "path": [
+            "v1",
+            "user"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Get Single User",
+      "id": "4d6d5622-98c5-4e28-945d-6179ce04efc6",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{JWT}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "url": {
+          "raw": "{{URL}}api/v1/user/4",
+          "host": [
+            "{{URL}}api"
+          ],
+          "path": [
+            "v1",
+            "user",
+            "4"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Delete User",
+      "id": "899c4a43-75d2-4fe7-be47-030d6bbad3e2",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{JWT}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "DELETE",
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n\"password\": \"Password123!\"\r\n\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{URL}}api/v1/user/1",
+          "host": [
+            "{{URL}}api"
+          ],
+          "path": [
+            "v1",
+            "user",
+            "1"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Delete User Account",
+      "id": "47a82edd-b9bf-4692-872d-e4de1824ea01",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{JWT}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "DELETE",
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{URL}}api/v1/user/me",
+          "host": [
+            "{{URL}}api"
+          ],
+          "path": [
+            "v1",
+            "user",
+            "me"
+          ]
+        }
+      }
+    }
+  ]
+}

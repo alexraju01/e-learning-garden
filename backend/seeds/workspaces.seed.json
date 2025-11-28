@@ -1,0 +1,17 @@
+[
+  { "name": "Engineering Team" },
+  { "name": "Marketing Team" },
+  { "name": "Product Team" },
+  { "name": "Design Team" },
+  { "name": "HR Team" },
+  { "name": "Sales Team" },
+  { "name": "Customer Success Team" },
+  { "name": "Operations Team" },
+  { "name": "Finance Team" },
+  { "name": "QA Team" },
+  { "name": "Legal Team" },
+  { "name": "Research & Development" },
+  { "name": "Support Team" },
+  { "name": "Admin Team" },
+  { "name": "Innovation Team" }
+]

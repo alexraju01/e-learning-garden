@@ -1,0 +1,43 @@
+[
+  {
+    "role": "admin",
+    "UserId": 1,
+    "WorkspaceId": 1
+  },
+  {
+    "role": "user",
+    "UserId": 2,
+    "WorkspaceId": 1
+  },
+  {
+    "role": "user",
+    "UserId": 3,
+    "WorkspaceId": 1
+  },
+  {
+    "role": "user",
+    "UserId": 4,
+    "WorkspaceId": 1
+  },
+  {
+    "role": "user",
+    "UserId": 5,
+    "WorkspaceId": 1
+  },
+
+  {
+    "role": "admin",
+    "UserId": 1,
+    "WorkspaceId": 2
+  },
+  {
+    "role": "user",
+    "UserId": 2,
+    "WorkspaceId": 2
+  },
+  {
+    "role": "user",
+    "UserId": 3,
+    "WorkspaceId": 2
+  }
+]
