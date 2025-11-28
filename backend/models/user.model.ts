@@ -6,7 +6,7 @@ import crypto from 'crypto';
 export type Roles = 'admin' | 'user';
 
 // User attributes interface
-interface UserAttributes {
+export interface UserAttributes {
   id: number;
   displayname: string;
   email: string;
@@ -36,6 +36,13 @@ class User extends Model<UserAttributes, UserCreationAttributes> {
   declare passwordResetToken: string | null;
   declare passwordResetExpires: Date | null;
   currentWorkspaceRole?: Roles;
+
+  toJSON() {
+    const values: Partial<UserAttributes> = this.get();
+    delete values.password;
+    delete values.confirmPassword;
+    return values;
+  }
 
   correctPassword!: (candidatePassword: string) => Promise<boolean>;
   changedPasswordAfter!: (JWTTimestamp: number) => boolean;

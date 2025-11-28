@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import User, { Roles } from '../models/user.model';
+import User from '../models/user.model';
 import jwt, { Secret } from 'jsonwebtoken';
 import AppError from '../lib/AppError';
 import { WorkspaceUser } from '../models/workspaceUser.model';
@@ -29,6 +29,24 @@ const signToken = (id: string): string => {
 
 const createSendToken = (user: User, statusCode: number, res: Response) => {
   const token = signToken(String(user.id));
+
+  const cookieOptions = {
+    expires: new Date(
+      Date.now() + Number(process.env.JWT_COOKIE_EXPIRES_IN!) * 24 * 60 * 60 * 1000,
+    ),
+    secure: false,
+    httpOnly: true,
+  };
+
+  if (process.env.NODE_ENV === 'production') cookieOptions.secure = true;
+  res.cookie('jwt', token, cookieOptions);
+
+  const userObject = user.toJSON();
+
+  // 2. Safely delete the properties from the plain object (The fix for your TS error is included here)
+  delete (userObject as any).password;
+  delete (userObject as any).confirmPassword;
+
   res.status(statusCode).json({
     status: 'success',
     token,
@@ -52,9 +70,7 @@ export const signUp = async (req: Request, res: Response) => {
 export const login = async (req: Request, res: Response, next: NextFunction) => {
   const { email, password } = req.body;
 
-  if (!email || !password) {
-    return next(new AppError('Please provide email and password', 400));
-  }
+  if (!email || !password) return next(new AppError('Please provide email and password', 400));
 
   const user = await User.scope('withPasswords').findOne({
     where: {
@@ -77,9 +93,7 @@ export const protect = async (req: Request, res: Response, next: NextFunction) =
     token = authorization.split(' ')[1];
   }
 
-  if (!token) {
-    return next(new AppError('Your are not logged in! Please login to get access.', 401));
-  }
+  if (!token) return next(new AppError('Your are not logged in! Please login to get access.', 401));
 
   // 2) Verifying the token
   const decoded = jwt.verify(token, process.env.JWT_SECRET as Secret) as CustomJwtPayload;
@@ -105,9 +119,7 @@ export const restrictTo = (...roles: string[]) => {
     const userId = req.user?.id;
     const workspaceId = req.params.id;
 
-    if (!userId) {
-      return next(new AppError('User authentication failed.', 401));
-    }
+    if (!userId) return next(new AppError('User authentication failed.', 401));
 
     // 1. Find the user's role for the specific workspace
     const workspaceUser = await WorkspaceUser.findOne({
@@ -118,9 +130,7 @@ export const restrictTo = (...roles: string[]) => {
     });
 
     // 2. Check if the user is a member at all
-    if (!workspaceUser) {
-      return next(new AppError('You are not a member of this workspace.', 403));
-    }
+    if (!workspaceUser) return next(new AppError('You are not a member of this workspace.', 403));
 
     // 3. Check if the user's role is included in the allowed roles
     const userRole = workspaceUser.role;
