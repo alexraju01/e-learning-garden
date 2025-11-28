@@ -9,10 +9,16 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as LoginRouteRouteImport } from './routes/login/route'
 import { Route as DashboardRouteRouteImport } from './routes/dashboard/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as WorkspaceWorkspaceIdRouteRouteImport } from './routes/workspace/$workspaceId/route'
 
+const LoginRouteRoute = LoginRouteRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DashboardRouteRoute = DashboardRouteRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
@@ -33,35 +39,46 @@ const WorkspaceWorkspaceIdRouteRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/dashboard': typeof DashboardRouteRoute
+  '/login': typeof LoginRouteRoute
   '/workspace/$workspaceId': typeof WorkspaceWorkspaceIdRouteRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/dashboard': typeof DashboardRouteRoute
+  '/login': typeof LoginRouteRoute
   '/workspace/$workspaceId': typeof WorkspaceWorkspaceIdRouteRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/dashboard': typeof DashboardRouteRoute
+  '/login': typeof LoginRouteRoute
   '/workspace/$workspaceId': typeof WorkspaceWorkspaceIdRouteRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/dashboard' | '/workspace/$workspaceId'
+  fullPaths: '/' | '/dashboard' | '/login' | '/workspace/$workspaceId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/dashboard' | '/workspace/$workspaceId'
-  id: '__root__' | '/' | '/dashboard' | '/workspace/$workspaceId'
+  to: '/' | '/dashboard' | '/login' | '/workspace/$workspaceId'
+  id: '__root__' | '/' | '/dashboard' | '/login' | '/workspace/$workspaceId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   DashboardRouteRoute: typeof DashboardRouteRoute
+  LoginRouteRoute: typeof LoginRouteRoute
   WorkspaceWorkspaceIdRouteRoute: typeof WorkspaceWorkspaceIdRouteRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/dashboard': {
       id: '/dashboard'
       path: '/dashboard'
@@ -89,6 +106,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   DashboardRouteRoute: DashboardRouteRoute,
+  LoginRouteRoute: LoginRouteRoute,
   WorkspaceWorkspaceIdRouteRoute: WorkspaceWorkspaceIdRouteRoute,
 }
 export const routeTree = rootRouteImport
