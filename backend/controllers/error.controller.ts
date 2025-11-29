@@ -1,13 +1,16 @@
 import { NextFunction, Request, Response } from 'express';
+import AppError from '../lib/AppError';
 
 interface ErrorMiddleware extends Error {
   statusCode: number;
   status: string;
   message: string;
-  stack: string;
+  stack?: string;
   name: string;
   isOperational?: boolean;
 }
+
+const handleJWTError = () => new AppError('Invalid Token! Please log in again', 401);
 
 // Development error handling
 const sendErrorDev = (err: ErrorMiddleware, res: Response) => {
@@ -49,8 +52,9 @@ export const globalErrorHandler = (
   } else if (process.env.NODE_ENV === 'production') {
     let error = { ...err };
     error.message = err.message;
+
+    if (error.name === 'JsonWebTokenError') error = handleJWTError();
+
     sendErrorProd(error, res);
   }
 };
-
-

@@ -87,7 +87,7 @@ export const getOneWorkspace = async (req: Request, res: Response, next: NextFun
 
 export const createWorkspace = async (req: Request, res: Response, next: NextFunction) => {
   const { name: rawName } = req.body;
-  const creatorId = req.user?.dataValues?.id;
+  const creatorId = req.user?.id;
   const name = rawName ? rawName.trim() : '';
 
   if (!creatorId) return next(new AppError('Authentication required. User ID is missing', 401));
