@@ -76,4 +76,7 @@ Workspace.belongsToMany(User, {
   as: 'AllMembers',
 });
 
+WorkspaceUser.belongsTo(User, { foreignKey: 'UserId' });
+User.hasMany(WorkspaceUser, { foreignKey: 'UserId' });
+
 export default Workspace;

@@ -49,6 +49,47 @@ export const getAllWorkspace = async (req: Request, res: Response) => {
   });
 };
 
+export const getOneWorkspace = async (req: Request, res: Response, next: NextFunction) => {
+  const { id } = req.params;
+
+  if (!req.user) {
+    return next(new AppError('User not authenticated', 401));
+  }
+
+  const userId = req.user.id;
+
+  // Validate membership
+  const membership = await WorkspaceUser.findOne({
+    where: { WorkspaceId: id, UserId: userId },
+  });
+
+  if (!membership) {
+    return next(new AppError('You do not have access to this workspace', 403));
+  }
+
+  // Fetch specified workspace
+  const workspace = await Workspace.findOne({
+    where: { id },
+    include: [
+      {
+        model: User,
+        as: 'AllMembers',
+        attributes: ['id', 'displayname', 'email'],
+        through: { attributes: ['role'] }, // Include role from join table
+      },
+    ],
+  });
+
+  if (!workspace) {
+    return next(new AppError('Workspace not found', 404));
+  }
+
+  res.status(200).json({
+    status: 'success',
+    data: { workspace },
+  });
+};
+
 export const createWorkspace = async (req: Request, res: Response, next: NextFunction) => {
   const { name: rawName } = req.body;
   const creatorId = req.user?.dataValues?.id;

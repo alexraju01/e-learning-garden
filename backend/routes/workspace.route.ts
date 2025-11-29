@@ -3,6 +3,7 @@ import {
   createWorkspace,
   deleteWorkspace,
   getAllWorkspace,
+  getOneWorkspace,
   joinWorkspace,
   updateWorkspace,
 } from '../controllers/workspace.controller';
@@ -17,5 +18,6 @@ workspaceRouter.route('/join').post(protect, joinWorkspace);
 
 workspaceRouter
   .route('/:id')
+  .get(protect, getOneWorkspace)
   .patch(protect, restrictTo('admin'), updateWorkspace)
   .delete(protect, restrictTo('admin'), deleteWorkspace);
