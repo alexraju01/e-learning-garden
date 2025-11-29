@@ -25,7 +25,7 @@ const seedDatabase = async () => {
 
     await Task.bulkCreate(tasksData);
     console.log(`${GREEN} Task seeded Successfully!${RESET}`);
-    
+
     // 5. Exit the process
     process.exit(0); // Use code 0 for a successful exit
   } catch (error) {

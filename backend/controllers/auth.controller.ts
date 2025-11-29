@@ -124,8 +124,8 @@ export const restrictTo = (...roles: string[]) => {
     // 1. Find the user's role for the specific workspace
     const workspaceUser = await WorkspaceUser.findOne({
       where: {
-        WorkspaceId: workspaceId,
-        UserId: userId,
+        workspaceId: workspaceId,
+        userId: userId,
       },
     });
 

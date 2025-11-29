@@ -3,12 +3,13 @@ import { sequelize } from '../config/db';
 import crypto from 'crypto';
 import User from './user.model';
 import { WorkspaceUser } from './workspaceUser.model';
+import TaskList from './taskList.model';
 
 interface WorkspaceAttributes {
   id: number;
   name: string;
   inviteCode: string;
-  AllMembers?: (User & { WorkspaceUser: WorkspaceUser })[];
+  allMembers?: (User & { WorkspaceUser: WorkspaceUser })[];
 }
 
 export type WorkspaceCreationAttributes = Optional<WorkspaceAttributes, 'id' | 'inviteCode'>;
@@ -18,8 +19,8 @@ class Workspace extends Model<WorkspaceAttributes, WorkspaceCreationAttributes> 
   declare name: string;
   declare inviteCode: string;
 
-  declare AllMembers?: (User & { WorkspaceUser: WorkspaceUser })[];
-  declare Members?: (User & { WorkspaceUser: WorkspaceUser })[];
+  declare allMembers?: (User & { WorkspaceUser: WorkspaceUser })[];
+  declare members?: (User & { WorkspaceUser: WorkspaceUser })[];
 }
 
 Workspace.init(
@@ -66,17 +67,29 @@ Workspace.init(
 // User <-> Workspace (M:M)
 User.belongsToMany(Workspace, {
   through: WorkspaceUser,
-  foreignKey: 'UserId',
-  as: 'Workspaces',
+  foreignKey: 'userId',
+  as: 'workspaces',
 });
 
 Workspace.belongsToMany(User, {
   through: WorkspaceUser,
-  foreignKey: 'WorkspaceId',
-  as: 'AllMembers',
+  foreignKey: 'workspaceId',
+  as: 'allMembers',
 });
 
-WorkspaceUser.belongsTo(User, { foreignKey: 'UserId' });
-User.hasMany(WorkspaceUser, { foreignKey: 'UserId' });
+WorkspaceUser.belongsTo(User, { foreignKey: 'userId' });
+User.hasMany(WorkspaceUser, { foreignKey: 'userId' });
+
+// Workspace <-> TaskList (1:M) - New associations
+Workspace.hasMany(TaskList, {
+  foreignKey: 'workspaceId',
+  as: 'tasklist',
+  onDelete: 'CASCADE',
+});
+
+TaskList.belongsTo(Workspace, {
+  foreignKey: 'workspaceId',
+  as: 'workspace',
+});
 
 export default Workspace;

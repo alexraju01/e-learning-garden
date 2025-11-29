@@ -11,13 +11,13 @@ export const getAllWorkspace = async (req: Request, res: Response) => {
 
   // 1. Find the IDs of all Workspaces the user belongs to (Subquery)
   const memberWorkspaceIds = await WorkspaceUser.findAll({
-    attributes: ['WorkspaceId'],
-    where: { UserId: userId },
+    attributes: ['workspaceId'],
+    where: { userId: userId },
     raw: true,
   });
 
   // Convert the result to a simple array of IDs (e.g., [16, 22, 45])
-  const ids = memberWorkspaceIds.map((item) => item.WorkspaceId);
+  const ids = memberWorkspaceIds.map((item) => item.workspaceId);
 
   // 2. Fetch the Workspaces using Op.in and include ALL members (Main Query)
   const workspaces = await Workspace.findAll({
@@ -25,7 +25,7 @@ export const getAllWorkspace = async (req: Request, res: Response) => {
     include: [
       {
         model: User,
-        as: 'AllMembers',
+        as: 'allMembers',
         attributes: ['id', 'displayname', 'email'],
         through: { attributes: ['role'] },
       },
@@ -37,7 +37,7 @@ export const getAllWorkspace = async (req: Request, res: Response) => {
   const workspacesWithCounts = workspaces.map((workspace) => {
     const workspaceJson = workspace.toJSON();
     return {
-      memberCount: workspaceJson.AllMembers?.length,
+      memberCount: workspaceJson.allMembers?.length,
       ...workspaceJson,
     };
   });
@@ -60,7 +60,7 @@ export const getOneWorkspace = async (req: Request, res: Response, next: NextFun
 
   // Validate membership
   const membership = await WorkspaceUser.findOne({
-    where: { WorkspaceId: id, UserId: userId },
+    where: { workspaceId: id, userId: userId },
   });
 
   if (!membership) {
@@ -73,7 +73,7 @@ export const getOneWorkspace = async (req: Request, res: Response, next: NextFun
     include: [
       {
         model: User,
-        as: 'AllMembers',
+        as: 'allMembers',
         attributes: ['id', 'displayname', 'email'],
         through: { attributes: ['role'] }, // Include role from join table
       },
@@ -106,7 +106,7 @@ export const createWorkspace = async (req: Request, res: Response, next: NextFun
     include: [
       {
         model: User,
-        as: 'AllMembers',
+        as: 'allMembers',
         where: { id: creatorId },
         required: true,
       },
@@ -132,8 +132,8 @@ export const createWorkspace = async (req: Request, res: Response, next: NextFun
   // 3. Add creator as Admin
   const workspaceUser = await WorkspaceUser.create(
     {
-      WorkspaceId: newWorkspace.id,
-      UserId: creatorId,
+      workspaceId: newWorkspace.id,
+      userId: creatorId,
       role: 'admin',
     },
     { transaction: t },
@@ -188,8 +188,8 @@ export const joinWorkspace = async (req: Request, res: Response, next: NextFunct
   // 2. Check if the user is already a member
   const existingMember = await WorkspaceUser.findOne({
     where: {
-      WorkspaceId: workspace?.dataValues.id,
-      UserId: userId,
+      workspaceId: workspace?.dataValues.id,
+      userId: userId,
     },
   });
 
@@ -197,8 +197,8 @@ export const joinWorkspace = async (req: Request, res: Response, next: NextFunct
 
   // 3. Add the user to the WorkspaceUser join table with 'user' role
   await WorkspaceUser.create({
-    WorkspaceId: workspace.dataValues.id,
-    UserId: userId,
+    workspaceId: workspace.dataValues.id,
+    userId: userId,
     role: 'user',
   });
 

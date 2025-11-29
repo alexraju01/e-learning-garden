@@ -4,7 +4,7 @@ import { sequelize } from '../config/db';
 interface TaskListAttributes {
   id: number;
   title: string;
-  WorkspaceId: number; //Foreign key
+  workspaceId: number; //Foreign key
 }
 
 export type TaskListCreationAttributes = Optional<TaskListAttributes, 'id'>;
@@ -15,7 +15,7 @@ export class TaskList
 {
   declare id: number;
   declare title: string;
-  declare WorkspaceId: number;
+  declare workspaceId: number;
 
   declare readonly createdAt: Date;
   declare readonly updatedAt: Date;
@@ -41,7 +41,7 @@ TaskList.init(
         },
       },
     },
-    WorkspaceId: {
+    workspaceId: {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
