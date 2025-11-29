@@ -5,6 +5,7 @@ import { WorkspaceUser } from '../models/workspaceUser.model';
 import { sequelize } from '../config/db';
 import User from '../models/user.model';
 import { Op } from 'sequelize';
+import { formatWorkspace, formatWorkspaces } from '../lib/formatWorkspace';
 
 export const getAllWorkspace = async (req: Request, res: Response) => {
   const userId = req?.user?.id;
@@ -34,13 +35,7 @@ export const getAllWorkspace = async (req: Request, res: Response) => {
   });
 
   // Add memberCount to each workspace
-  const workspacesWithCounts = workspaces.map((workspace) => {
-    const workspaceJson = workspace.toJSON();
-    return {
-      memberCount: workspaceJson.allMembers?.length,
-      ...workspaceJson,
-    };
-  });
+  const workspacesWithCounts = formatWorkspaces(workspaces);
 
   res.status(200).json({
     status: 'success',
@@ -86,7 +81,7 @@ export const getOneWorkspace = async (req: Request, res: Response, next: NextFun
 
   res.status(200).json({
     status: 'success',
-    data: { workspace },
+    data: { workspace: formatWorkspace(workspace) },
   });
 };
 
