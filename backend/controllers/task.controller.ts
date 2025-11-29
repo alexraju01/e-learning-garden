@@ -1,12 +1,18 @@
 import { NextFunction, Request, Response } from 'express';
 import Task from '../models/task.model';
 import AppError from '../lib/AppError';
+import APIFeatures, { QueryString } from '../lib/APIFearure';
 
-export const getAllTasks = async (_: Request, res: Response) => {
-  const tasks = await Task.findAll({
-    order: [['id', 'asc']],
+export const getAllTasks = async (req: Request, res: Response) => {
+  const features = new APIFeatures(Task, req.query as QueryString).filter().sort().exec(); // execute query here
+  const { count, rows } = await features.query;
+  res.status(200).json({
+    status: 'success',
+    results: count,
+    data: {
+      tasks: rows,
+    },
   });
-  res.status(200).json({ status: 'success', results: tasks.length, data: { tasks: tasks } });
 };
 
 export const getOneTask = async (req: Request, res: Response, next: NextFunction) => {

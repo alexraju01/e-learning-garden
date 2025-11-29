@@ -1,0 +1,17 @@
+[
+  { "id": 1, "title": "Sprint Backlog Q4", "workspaceId": 1 },
+  { "id": 2, "title": "Current Sprint", "workspaceId": 1 },
+  { "id": 3, "title": "Blockers", "workspaceId": 1 },
+  { "id": 4, "title": "Testing Queue", "workspaceId": 2 },
+  { "id": 5, "title": "Done", "workspaceId": 1 },
+
+  { "id": 6, "title": "Q1 2026 Strategy", "workspaceId": 3 },
+  { "id": 7, "title": "Content Review & Approval", "workspaceId": 3 },
+  { "id": 8, "title": "Social Media Posts", "workspaceId": 3 },
+
+  { "id": 9, "title": "New Features", "workspaceId": 4 },
+  { "id": 10, "title": "User Feedback Analysis", "workspaceId": 4 },
+
+  { "id": 11, "title": "Recruitment Pipeline", "workspaceId": 5 },
+  { "id": 12, "title": "Onboarding Checklist", "workspaceId": 5 }
+]

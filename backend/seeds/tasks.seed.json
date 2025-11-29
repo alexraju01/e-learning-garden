@@ -2,10 +2,11 @@
   {
     "title": "Setup Sequelize Model",
     "description": "Finalize the Task model definition, including all necessary attributes and associations.",
-    "status": "not started",
+    "status": "in progress",
     "priority": "high",
     "tags": ["backend", "sequelize", "model"],
-    "dueBy": "2025-12-01T12:00:00Z"
+    "dueBy": "2025-12-01T12:00:00Z",
+    "taskListId": 2
   },
   {
     "title": "Configure Database Connection",
@@ -13,7 +14,8 @@
     "status": "completed",
     "priority": "medium",
     "tags": ["config", "database"],
-    "dueBy": "2025-11-20T10:00:00Z"
+    "dueBy": "2025-11-20T10:00:00Z",
+    "taskListId": 5
   },
   {
     "title": "Implement API Route for Tasks",
@@ -21,7 +23,8 @@
     "status": "in progress",
     "priority": "high",
     "tags": ["api", "routes", "crud"],
-    "dueBy": "2025-11-30T09:00:00Z"
+    "dueBy": "2025-12-02T09:00:00Z",
+    "taskListId": 2
   },
   {
     "title": "Write Unit Tests for Model",
@@ -29,7 +32,8 @@
     "status": "not started",
     "priority": "low",
     "tags": ["testing", "backend"],
-    "dueBy": "2025-12-05T14:00:00Z"
+    "dueBy": "2025-12-05T14:00:00Z",
+    "taskListId": 1
   },
   {
     "title": "Design Front-End Task List",
@@ -37,7 +41,8 @@
     "status": "completed",
     "priority": "medium",
     "tags": ["frontend", "react", "ui"],
-    "dueBy": "2025-12-05T17:00:00Z"
+    "dueBy": "2025-12-05T17:00:00Z",
+    "taskListId": 5
   },
   {
     "title": "Debug Task Creation Bug",
@@ -45,7 +50,8 @@
     "status": "in progress",
     "priority": "high",
     "tags": ["bug", "fix", "critical"],
-    "dueBy": "2025-11-27T16:00:00Z"
+    "dueBy": "2025-12-01T16:00:00Z",
+    "taskListId": 3
   },
   {
     "title": "Review PR #42: Database Seeding",
@@ -53,7 +59,8 @@
     "status": "completed",
     "priority": "low",
     "tags": ["review", "database", "pr"],
-    "dueBy": "2025-11-28T15:00:00Z"
+    "dueBy": "2025-11-28T15:00:00Z",
+    "taskListId": 5
   },
   {
     "title": "Update Documentation",
@@ -61,7 +68,8 @@
     "status": "not started",
     "priority": "low",
     "tags": ["docs", "cleanup"],
-    "dueBy": "2025-12-10T11:00:00Z"
+    "dueBy": "2025-12-10T11:00:00Z",
+    "taskListId": 1
   },
   {
     "title": "Refactor Task Controller Logic",
@@ -69,7 +77,8 @@
     "status": "in review",
     "priority": "medium",
     "tags": ["refactor", "backend", "performance"],
-    "dueBy": "2025-12-02T10:30:00Z"
+    "dueBy": "2025-12-03T10:30:00Z",
+    "taskListId": 4
   },
   {
     "title": "Plan Next Sprint Features",
@@ -77,6 +86,7 @@
     "status": "not started",
     "priority": "low",
     "tags": ["planning", "meeting"],
-    "dueBy": "2025-12-03T18:00:00Z"
+    "dueBy": "2025-12-04T18:00:00Z",
+    "taskListId": 1
   }
 ]

@@ -39,7 +39,7 @@ const createSendToken = (user: User, statusCode: number, res: Response) => {
   };
 
   if (process.env.NODE_ENV === 'production') cookieOptions.secure = true;
-  res.cookie('jwt', token, cookieOptions);
+  res.cookie('JWT', token, cookieOptions);
 
   const userObject = user.toJSON();
 
@@ -85,12 +85,27 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
   createSendToken(user, 200, res);
 };
 
+export const logout = (req: Request, res: Response, next: NextFunction) => {
+  res.cookie('JWT', 'loggedout', {
+    expires: new Date(Date.now() + 10 * 1000),
+    httpOnly: true,
+  });
+  res.status(200).json({ status: 'success' });
+};
+
 export const protect = async (req: Request, res: Response, next: NextFunction) => {
   const { authorization } = req.headers;
   let token;
   // 1) Getting the token and check if it exist
-  if (authorization && authorization.startsWith('Bearer')) {
+  if (req.cookies.JWT) {
+    token = req.cookies.JWT;
+  } else if (authorization && authorization.startsWith('Bearer')) {
+    // Fallback to Authorization header
     token = authorization.split(' ')[1];
+  }
+
+  if (token === 'loggedout') {
+    return next(new AppError('You are not logged in! Please login to get access.', 401));
   }
 
   if (!token) return next(new AppError('Your are not logged in! Please login to get access.', 401));
@@ -124,8 +139,8 @@ export const restrictTo = (...roles: string[]) => {
     // 1. Find the user's role for the specific workspace
     const workspaceUser = await WorkspaceUser.findOne({
       where: {
-        WorkspaceId: workspaceId,
-        UserId: userId,
+        workspaceId: workspaceId,
+        userId: userId,
       },
     });
 

@@ -1,8 +1,9 @@
 {
   "info": {
-    "_postman_id": "a8f5f7d7-c156-4afb-9574-36d1d96458c8",
+    "_postman_id": "ef73c384-0e85-4b88-a256-1c878e037f6f",
     "name": "Auth",
-    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "33181032"
   },
   "item": [
     {
@@ -11,30 +12,35 @@
         {
           "listen": "prerequest",
           "script": {
-            "id": "836f626c-8444-4bda-a968-01231fe44729",
+            "id": "fde6e0a8-a0e6-4f82-ab79-9ac77cca6021",
             "exec": [
               ""
             ],
-            "type": "text/javascript"
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
           }
         },
         {
           "listen": "test",
           "script": {
-            "id": "c3ae490f-464d-4228-b237-8c32c4e8899f",
+            "id": "7f5ff2bc-23e0-4bfb-ab69-b66fdf9a26c8",
             "exec": [
               "pm.environment.set(\"JWT\", pm.response.json().token);"
             ],
-            "type": "text/javascript"
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
           }
         }
       ],
-      "id": "48a13260-c043-48a9-b512-b2c28063e5ef",
+      "id": "eef5c11b-9c1f-43c5-8ffb-02a9b8d6ac68",
       "request": {
         "method": "POST",
+        "header": [],
         "body": {
           "mode": "raw",
-          "raw": "{\r\n \"displayname\": \"line_manager_jane\",\r\n    \"email\": \"lmjane@example.com\",\r\n    \"password\": \"Password123!\",\r\n    \"confirmPassword\": \"Password123!\"\r\n}",
+          "raw": " {\r\n    \"displayname\": \"tedstddc12\",\r\n    \"email\": \"test@example.com\",\r\n    \"password\": \"Password123!\",\r\n    \"confirmPassword\": \"Password123!\"\r\n \r\n  }",
           "options": {
             "raw": {
               "language": "json"
@@ -52,11 +58,38 @@
             "signup"
           ]
         }
-      }
+      },
+      "response": []
     },
     {
       "name": "Login",
-      "id": "c70202b7-b087-4ae1-8510-80db2817e0c3",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "id": "4a32a1c1-c84c-4a05-bd41-e398c6948939",
+            "exec": [
+              "pm.environment.set(\"JWT\", pm.response.json().token);"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        },
+        {
+          "listen": "prerequest",
+          "script": {
+            "id": "b9eea561-880d-41aa-90ce-68440fa6e285",
+            "exec": [
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "id": "1d850294-3e57-4f93-9b86-ad4d219cc467",
       "request": {
         "auth": {
           "type": "bearer",
@@ -78,7 +111,7 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "",
+          "raw": "{\r\n    \"email\": \"test@example.com\",\r\n    \"password\": \"Password123!\"\r\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -96,25 +129,8 @@
             "login"
           ]
         }
-      }
-    },
-    {
-      "name": "Forgot Password",
-      "id": "a4a7d258-a43c-4ebf-9be7-37a3847aaa64",
-      "request": {
-        "method": "POST",
-        "url": {
-          "raw": "{{URL}}api/v1/user/forgot-password",
-          "host": [
-            "{{URL}}api"
-          ],
-          "path": [
-            "v1",
-            "user",
-            "forgot-password"
-          ]
-        }
-      }
+      },
+      "response": []
     }
   ]
 }

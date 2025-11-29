@@ -6,8 +6,8 @@ type Role = 'admin' | 'user';
 interface WorkspaceUserAttributes {
   id: number;
   role: Role;
-  UserId: number;
-  WorkspaceId: number;
+  userId: number;
+  workspaceId: number;
 }
 
 interface WorkspaceUserCreationAttributes
@@ -19,8 +19,8 @@ export class WorkspaceUser
 {
   declare id: number;
   declare role: Role;
-  declare UserId: number;
-  declare WorkspaceId: number;
+  declare userId: number;
+  declare workspaceId: number;
 
   declare readonly createdAt: Date;
   declare readonly updatedAt: Date;
@@ -38,22 +38,21 @@ WorkspaceUser.init(
       allowNull: false,
       defaultValue: 'user',
     },
-    UserId: {
+    userId: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-    WorkspaceId: {
+    workspaceId: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
   },
   {
     sequelize,
-    modelName: 'WorkspaceUser',
     indexes: [
       {
         unique: true,
-        fields: ['UserId', 'WorkspaceId'],
+        fields: ['userId', 'workspaceId'],
       },
     ],
   },

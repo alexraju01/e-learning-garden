@@ -1,5 +1,6 @@
 import { CreationOptional, DataTypes, Model, Optional } from 'sequelize';
 import { sequelize } from '../config/db';
+import TaskList from './taskList.model';
 
 type Status = 'not started' | 'in progress' | 'completed' | 'in review';
 type Priority = 'low' | 'medium' | 'high';
@@ -13,6 +14,7 @@ export interface TaskAttributes {
   tags: string[];
   priority: Priority;
   dueBy: Date;
+  taskListId: number; // Forgein key
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -29,6 +31,7 @@ class Task extends Model<TaskAttributes, TaskCreationAttributes> {
   declare priority: Priority;
   declare tags: string[];
   declare dueBy: Date | null;
+  declare taskListId: number;
   declare createdAt: Date;
   declare updatedAt: Date;
 }
@@ -103,10 +106,32 @@ Task.init(
         },
       },
     },
+    taskListId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        key: 'id',
+      },
+      onUpdate: 'CASCADE',
+      onDelete: 'CASCADE',
+    },
   },
   {
     sequelize,
   },
 );
+
+// ######### Define Associations ##########
+
+TaskList.hasMany(Task, {
+  foreignKey: 'taskListId',
+  as: 'tasks',
+  onDelete: 'CASCADE',
+});
+
+Task.belongsTo(TaskList, {
+  foreignKey: 'taskListId',
+  as: 'taskList',
+});
 
 export default Task;

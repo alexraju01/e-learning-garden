@@ -1,15 +1,17 @@
 {
   "info": {
-    "_postman_id": "31dfcc4a-a2e1-445c-a203-9715722c51c0",
+    "_postman_id": "31e61e80-58f2-4a42-bf11-82accc95347f",
     "name": "Users",
-    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "33181032"
   },
   "item": [
     {
       "name": "Get All users",
-      "id": "403cf3fc-893c-4d70-9f8e-b1758335e444",
+      "id": "f669fb28-814d-4ef7-ac3b-4462f343c992",
       "request": {
         "method": "GET",
+        "header": [],
         "url": {
           "raw": "{{URL}}api/v1/user",
           "host": [
@@ -20,11 +22,12 @@
             "user"
           ]
         }
-      }
+      },
+      "response": []
     },
     {
       "name": "Get Single User",
-      "id": "4d6d5622-98c5-4e28-945d-6179ce04efc6",
+      "id": "a2da423a-d5db-40b1-8b34-df130618eca3",
       "request": {
         "auth": {
           "type": "bearer",
@@ -37,6 +40,7 @@
           ]
         },
         "method": "GET",
+        "header": [],
         "url": {
           "raw": "{{URL}}api/v1/user/4",
           "host": [
@@ -48,11 +52,12 @@
             "4"
           ]
         }
-      }
+      },
+      "response": []
     },
     {
       "name": "Delete User",
-      "id": "899c4a43-75d2-4fe7-be47-030d6bbad3e2",
+      "id": "5fab4990-c416-4e53-823b-63018197d7d8",
       "request": {
         "auth": {
           "type": "bearer",
@@ -65,9 +70,10 @@
           ]
         },
         "method": "DELETE",
+        "header": [],
         "body": {
           "mode": "raw",
-          "raw": "{\r\n\"password\": \"Password123!\"\r\n\r\n}",
+          "raw": "",
           "options": {
             "raw": {
               "language": "json"
@@ -85,11 +91,12 @@
             "1"
           ]
         }
-      }
+      },
+      "response": []
     },
     {
-      "name": "Delete User Account",
-      "id": "47a82edd-b9bf-4692-872d-e4de1824ea01",
+      "name": "Delete Account",
+      "id": "730e153b-f672-49f3-ae95-37363111a330",
       "request": {
         "auth": {
           "type": "bearer",
@@ -102,9 +109,10 @@
           ]
         },
         "method": "DELETE",
+        "header": [],
         "body": {
           "mode": "raw",
-          "raw": "",
+          "raw": "{\r\n    \"password\": \"Password123!\"\r\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -122,7 +130,8 @@
             "me"
           ]
         }
-      }
+      },
+      "response": []
     }
   ]
 }
